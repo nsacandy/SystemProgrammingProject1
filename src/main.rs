@@ -1,33 +1,44 @@
+use std::fs::{self, File};
 use std::io;
+use std::path::Path;
 use csv::ReaderBuilder;
-use std::fs::File;
 
 fn main() -> io::Result<()> {
-    // Specify the file path
-    let file_path = "/Users/dillonemmons/SystemProgrammingProject1/data/data/CTONGA/branch_weekly_sales.txt";
-    let file = File::open(file_path)?;
-    // Read the file content into a String
+    //Select base directory
+    let base_dir = "../data/data";
 
+    //Iterate through each  branch folder
+    for branch_entry in fs::read_dir(base_dir)? {
+        let branch_entry = branch_entry?;
+        let branch_path = branch_entry.path();
 
-    // Create the CSV reader (without headers) from the file
-    let mut rdr = ReaderBuilder::new().has_headers(false).from_reader(file);
+        //Make sure it's a directory
+        if branch_path.is_dir() {
+            //Specify the file name
+            let file_path = branch_path.join("branch_weekly_sales.txt");
 
-   
-    // Iterate over each record
-    for result in rdr.records() {
-        let record = result?;
-        let sales_string = &record[2].trim();
+            //Check file exists
+            if file_path.exists() && file_path.is_file() {
+                let file = File::open(file_path)?;
+
+                // Create the CSV reader (without headers) from the file
+                let mut rdr = ReaderBuilder::new().has_headers(false).from_reader(file);
+
+                // Iterate over each record
+                for result in rdr.records() {
+                    let record = result?;
+                    let sales_string = &record[2].trim();
         
-    // Converting a String to an i32
-        let total_sales = sales_string.parse::<i32>().unwrap();
+                // Converting a String to an i32
+                let total_sales = sales_string.parse::<i32>().unwrap();
 
-        // Print the fields of each record
-        println!("{} {} {} {}", &record[0], &record[1], &record[2], &record[3]);
-        println!("{}", total_sales);
+                // Print the fields of each record, and the total sales for each day as an int
+                println!("{} {} {} {}", &record[0], &record[1], &record[2], &record[3]);
+                println!("{}", total_sales);
+                }
+            }
+        }
     }
 
-    // Print the file content
-    //println!("File Contents:\n{}", contents);
-    
     Ok(())
 }
