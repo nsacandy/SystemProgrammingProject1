@@ -1,11 +1,10 @@
-use std::fs;
 use std::io;
 use csv::ReaderBuilder;
 use std::fs::File;
 
 fn main() -> io::Result<()> {
     // Specify the file path
-    let file_path = "..data/data/CTONGA/branch_weekly_sales.txt";
+    let file_path = "/Users/dillonemmons/SystemProgrammingProject1/data/data/CTONGA/branch_weekly_sales.txt";
     let file = File::open(file_path)?;
     // Read the file content into a String
 
