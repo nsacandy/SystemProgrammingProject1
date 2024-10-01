@@ -1,6 +1,5 @@
 use std::fs::{self, File};
 use std::io;
-use std::path::Path;
 use csv::ReaderBuilder;
 
 fn main() -> io::Result<()> {
@@ -24,6 +23,9 @@ fn main() -> io::Result<()> {
                 // Create the CSV reader (without headers) from the file
                 let mut rdr = ReaderBuilder::new().has_headers(false).from_reader(file);
 
+                //Create total weekly sales variable to sum up all sales
+                let mut total_weekly_sales = 0;
+
                 // Iterate over each record
                 for result in rdr.records() {
                     let record = result?;
@@ -31,11 +33,14 @@ fn main() -> io::Result<()> {
         
                 // Converting a String to an i32
                 let total_sales = sales_string.parse::<i32>().unwrap();
+                total_weekly_sales += total_sales;
 
                 // Print the fields of each record, and the total sales for each day as an int
                 println!("{} {} {} {}", &record[0], &record[1], &record[2], &record[3]);
-                println!("{}", total_sales);
                 }
+                
+                //Print the total number of sales for the  week
+                println!("There were {} sales this week", total_weekly_sales);
             }
         }
     }
