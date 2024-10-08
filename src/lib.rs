@@ -1,9 +1,9 @@
-use std::fs::{self, File};
-use std::io;
-use cs::ReaderBuilder;
+use std::fs::{self, File, OpenOptions};
+use std::io::{self, Write};
+use csv::ReaderBuilder;
 use std::path::Path;
 
-pub fn process_input_file(base_dir: &str) -> io::Result<()> {
+pub fn process_input_file(base_dir: &str, output_file_path: &str) -> io::Result<()> {
     //Iterate through each branch folder
     for branch_entry in fs::read_dir(base_dir)? {
         let branch_entry = branch_entry?;
@@ -24,11 +24,14 @@ pub fn process_input_file(base_dir: &str) -> io::Result<()> {
 
                 // Create total weekly sales variable to sum up all sales
                 let mut total_weekly_sales = 0;
+                let mut branch_name = String::new();
 
                 //Iterate over each record
-                for result in rdr.records() {
+                for (index, result) in rdr.records().enumerate() {
                     let record = result?;
-                    let branch_name  = &record[0].trim();
+                    if index == 0 {
+                        branch_name = record[0].trim().to_string();
+                    }
                     let sales_string = &record[2].trim();
 
                     //Convert String to i32
@@ -36,7 +39,31 @@ pub fn process_input_file(base_dir: &str) -> io::Result<()> {
                     total_weekly_sales += total_sales;
                 }
 
+                //Call write_to_summary_file to write branch's sales data
+                write_to_summary_file(output_file_path, &branch_name, total_weekly_sales)?;
+
             }
         }
     }
+
+    Ok(())
+}
+
+fn write_to_summary_file(output_file_path: &str, branch_name: &str, total_sales: i32) -> io::Result<()> {
+
+    let output_dir = Path::new(output_file_path).parent().unwrap();
+    if !output_dir.exists() {
+        fs::create_dir_all(output_dir)?;
+    }
+    //Open the output file with the option  to append data to it
+    let mut output_file = OpenOptions::new()
+        .write(true)
+        .create(true)
+        .append(true)
+        .open(output_file_path)?;
+
+    //Write the branch name and total sales to  the output file
+    writeln!(output_file, "{}, {}", branch_name, total_sales)?;
+
+    Ok(())
 }

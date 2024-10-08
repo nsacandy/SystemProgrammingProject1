@@ -1,54 +1,27 @@
-use std::fs::{self, File};
-use std::io;
-use std::io::Write;
-use csv::ReaderBuilder;
+mod lib;
+use std::io::{self, Write};
+use std::fs::OpenOptions;
+use std::path::Path;
+use lib::process_input_file;
 
 fn main() -> io::Result<()> {
-    //Select base directory
+    // Define the base directory where the branch folders are located
     let base_dir = "../data/data";
-    let mut file = File::create("outputFile.txt")?;
-    let fake_output = "Hello partners";
-    file.write_all(&fake_output.as_bytes())?;
+    
+    // Define the output file path
+    let output_file_path = "..data/data/branch_sales_summary.txt";
 
-    //Iterate through each  branch folder
-    for branch_entry in fs::read_dir(base_dir)? {
-        let branch_entry = branch_entry?;
-        let branch_path = branch_entry.path();
-
-        //Make sure it's a directory
-        if branch_path.is_dir() {
-            //Specify the file name
-            let file_path = branch_path.join("branch_weekly_sales.txt");
-
-            //Check file exists
-            if file_path.exists() && file_path.is_file() {
-                let file = File::open(file_path)?;
-
-                // Create the CSV reader (without headers) from the file
-                let mut rdr = ReaderBuilder::new().has_headers(false).from_reader(file);
-
-                //Create total weekly sales variable to sum up all sales
-                let mut total_weekly_sales = 0;
-
-
-                // Iterate over each record
-                for result in rdr.records() {
-                    let record = result?;
-                    let sales_string = &record[2].trim();
-        
-                // Converting a String to an i32
-                let total_sales = sales_string.parse::<i32>().unwrap();
-                total_weekly_sales += total_sales;
-
-                // Print the fields of each record, and the total sales for each day as an int
-                println!("{} {} {} {}", &record[0], &record[1], &record[2], &record[3]);
-                }
-                
-                //Print the total number of sales for the  week
-                println!("There were {} sales this week", total_weekly_sales);
-            }
-        }
+    let output_file = Path::new(output_file_path);
+    if output_file.exists() {
+        // Open the file with the truncate option to clear its contents
+        OpenOptions::new()
+            .write(true)
+            .truncate(true)
+            .open(output_file_path)?;
     }
+
+    // Call the process_input_file function
+    process_input_file(base_dir, output_file_path)?;
 
     Ok(())
 }
