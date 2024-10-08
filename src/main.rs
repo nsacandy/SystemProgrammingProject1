@@ -1,10 +1,14 @@
 use std::fs::{self, File};
 use std::io;
+use std::io::Write;
 use csv::ReaderBuilder;
 
 fn main() -> io::Result<()> {
     //Select base directory
     let base_dir = "../data/data";
+    let mut file = File::create("outputFile.txt")?;
+    let fake_output = "Hello partners";
+    file.write_all(&fake_output.as_bytes())?;
 
     //Iterate through each  branch folder
     for branch_entry in fs::read_dir(base_dir)? {
@@ -25,6 +29,7 @@ fn main() -> io::Result<()> {
 
                 //Create total weekly sales variable to sum up all sales
                 let mut total_weekly_sales = 0;
+
 
                 // Iterate over each record
                 for result in rdr.records() {
