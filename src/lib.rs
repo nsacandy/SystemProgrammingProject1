@@ -2,8 +2,13 @@ use std::fs::{self, File, OpenOptions};
 use std::io::{self, Write};
 use csv::ReaderBuilder;
 use std::path::Path;
+use std::time::Instant;
 
 pub fn process_input_file(base_dir: &str, output_file_path: &str) -> io::Result<()> {
+
+    // Start the timer
+    let start_time = Instant::now();
+
     //Iterate through each branch folder
     for branch_entry in fs::read_dir(base_dir)? {
         let branch_entry = branch_entry?;
@@ -46,6 +51,12 @@ pub fn process_input_file(base_dir: &str, output_file_path: &str) -> io::Result<
         }
     }
 
+    // Stop the timer and get the elapsed time
+    let duration = start_time.elapsed();
+
+    // Add the execution time to the output file
+    write_duration_to_file(output_file_path, duration)?;
+
     Ok(())
 }
 
@@ -64,6 +75,25 @@ fn write_to_summary_file(output_file_path: &str, branch_name: &str, total_sales:
 
     //Write the branch name and total sales to  the output file
     writeln!(output_file, "{}, {}", branch_name, total_sales)?;
+
+    Ok(())
+}
+
+// Function to write the duration to the output file
+fn write_duration_to_file(output_file_path: &str, duration: std::time::Duration) -> io::Result<()> {
+    // Open the output file with the option to append data to it
+    let mut output_file = OpenOptions::new()
+        .write(true)
+        .create(true)
+        .append(true)
+        .open(output_file_path)?;
+
+    // Write the duration to the output file
+    writeln!(
+        output_file,
+        "\nTotal execution time: {:.2?} seconds",
+        duration.as_secs_f64()
+    )?;
 
     Ok(())
 }
