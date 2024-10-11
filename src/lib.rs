@@ -1,8 +1,7 @@
+use csv::ReaderBuilder;
 use std::fs::{self, File, OpenOptions};
 use std::io::{self, Write};
-use csv::ReaderBuilder;
 use std::path::Path;
-
 
 pub fn process_input_file(base_dir: &str, output_file_path: &str) -> io::Result<()> {
 
@@ -13,9 +12,8 @@ pub fn process_input_file(base_dir: &str, output_file_path: &str) -> io::Result<
 
         //Make sure its a  directory
         if branch_path.is_dir() {
-
             //Specify the file name
-            let file_path  = branch_path.join("branch_weekly_sales.txt");
+            let file_path = branch_path.join("branch_weekly_sales.txt");
 
             //Check if the file exists
             if file_path.exists() && file_path.is_file() {
@@ -39,20 +37,22 @@ pub fn process_input_file(base_dir: &str, output_file_path: &str) -> io::Result<
                     //Convert String to i32
                     let total_sales = sales_string.parse::<i32>().unwrap();
                     total_weekly_sales += total_sales;
-                }
+                } 
 
                 //Call write_to_summary_file to write branch's sales data
                 write_to_summary_file(output_file_path, &branch_name, total_weekly_sales)?;
-
-            }
+            } 
         }
     }
 
     Ok(())
 }
 
-fn write_to_summary_file(output_file_path: &str, branch_name: &str, total_sales: i32) -> io::Result<()> {
-
+fn write_to_summary_file(
+    output_file_path: &str,
+    branch_name: &str,
+    total_sales: i32,
+) -> io::Result<()> {
     let output_dir = Path::new(output_file_path).parent().unwrap();
     if !output_dir.exists() {
         fs::create_dir_all(output_dir)?;
