@@ -6,10 +6,10 @@ use lib::process_input_file;
 
 fn main() -> io::Result<()> {
     // Define the base directory where the branch folders are located
-    let base_dir = "../data/data";
+    let base_dir = "../data";
     
     // Define the output file path
-    let output_file_path = "..data/data/branch_sales_summary.txt";
+    let output_file_path = "../data/weekly_summary/weekly_sales_summary.txt";
 
     let output_file = Path::new(output_file_path);
     if output_file.exists() {
