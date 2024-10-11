@@ -3,9 +3,11 @@ use std::io::{self, Write};
 use std::fs::OpenOptions;
 use std::path::Path;
 use lib::process_input_file;
+use std::time::Instant;
 
 fn main() -> io::Result<()> {
-    // Define the base directory where the branch folders are located
+    // Start the timer
+    let start_time = Instant::now();
     let base_dir = "../data";
     
     // Define the output file path
@@ -23,5 +25,8 @@ fn main() -> io::Result<()> {
     // Call the process_input_file function
     process_input_file(base_dir, output_file_path)?;
 
+    // Stop the timer and get the elapsed time
+    let duration = start_time.elapsed();
+    println!("Time elapsed: {}", duration.as_secs_f64());
     Ok(())
 }

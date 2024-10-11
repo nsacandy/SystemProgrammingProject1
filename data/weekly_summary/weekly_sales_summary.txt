@@ -39,5 +39,3 @@ COSPCL, 60
 SITAL, 60
 TASCLAL, 60
 SNDICA, 60
-
-Total execution time: 0.01 seconds

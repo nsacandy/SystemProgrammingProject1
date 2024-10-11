@@ -2,12 +2,9 @@ use std::fs::{self, File, OpenOptions};
 use std::io::{self, Write};
 use csv::ReaderBuilder;
 use std::path::Path;
-use std::time::Instant;
+
 
 pub fn process_input_file(base_dir: &str, output_file_path: &str) -> io::Result<()> {
-
-    // Start the timer
-    let start_time = Instant::now();
 
     //Iterate through each branch folder
     for branch_entry in fs::read_dir(base_dir)? {
@@ -50,12 +47,6 @@ pub fn process_input_file(base_dir: &str, output_file_path: &str) -> io::Result<
             }
         }
     }
-
-    // Stop the timer and get the elapsed time
-    let duration = start_time.elapsed();
-
-    // Add the execution time to the output file
-    write_duration_to_file(output_file_path, duration)?;
 
     Ok(())
 }
