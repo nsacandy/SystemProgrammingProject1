@@ -3,22 +3,22 @@
  use std::fs::{self, File, OpenOptions};
  use std::io::{self, Write};
  use std::path::Path;
+ use std::vec::Vec;
 
- pub fn process_input_file(base_dir: &str, output_file_path: &str) -> io::Result<()> {
+pub fn process_input_file(base_dir: Vec<String>, output_file_path: &str) -> io::Result<()> {
+    // Iterate through each branch folder
+    for branch_entry in base_dir {
+        // Convert the branch_entry string to a Path
+        let branch_path = Path::new(&branch_entry);
 
-     //Iterate through each branch folder
-     for branch_entry in fs::read_dir(base_dir)? {
-         let branch_entry = branch_entry?;
-         let branch_path = branch_entry.path();
+        // Ensure it's a directory
+        if branch_path.is_dir() {
+            // Specify the file name by joining paths
+            let file_path = branch_path.join("branch_weekly_sales.txt");
 
-         //Make sure its a  directory
-         if branch_path.is_dir() {
-             //Specify the file name
-             let file_path = branch_path.join("branch_weekly_sales.txt");
-
-             //Check if the file exists
-             if file_path.exists() && file_path.is_file() {
-                 let file = File::open(file_path)?;
+            // Check if the file exists and is a regular file
+            if file_path.exists() && file_path.is_file() {
+                let file = File::open(file_path)?;
 
                  // Create the CSV reader (without headers) from the file
                  let mut rdr = ReaderBuilder::new().has_headers(false).from_reader(file);

@@ -47,7 +47,7 @@ fn main() -> io::Result<()> {
     let (tx, rx) = mpsc::channel();
     let mut handles = vec![];
 
-// Create 4 threads and distribute the folders using a modulo operation
+    // Create 4 threads and distribute the folders using a modulo operation
     let num_threads = 4;
     for i in 0..num_threads {
         let tx = tx.clone();
@@ -66,7 +66,7 @@ fn main() -> io::Result<()> {
         let output_file_path_thread = output_file_path.to_string();
         let handle = thread::spawn(move || {
             // Reusing the process_input_file function from lib.rs
-            process_input_file(&folders_for_thread, &output_file_path_thread).expect("Thread processing failed");
+            process_input_file(folders_for_thread, &output_file_path_thread).expect("Thread processing failed");
             tx.send("Thread finished".to_string()).expect("Failed to send message");
         });
 
@@ -92,4 +92,7 @@ fn main() -> io::Result<()> {
 
     let duration = start_time.elapsed();
     println!("Multithreaded Time elapsed: {:.2?} seconds", duration);
+
+    // Return success
+    Ok(())
 }
