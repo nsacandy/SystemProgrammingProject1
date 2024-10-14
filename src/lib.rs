@@ -70,25 +70,6 @@
 
      Ok(())
  }
-
- // Function to write the duration to the output file
- fn write_duration_to_file(output_file_path: &str, duration: std::time::Duration) -> io::Result<()> {
-     // Open the output file with the option to append data to it
-     let mut output_file = OpenOptions::new()
-         .write(true)
-         .create(true)
-         .append(true)
-         .open(output_file_path)?;
-
-     // Write the duration to the output file
-     writeln!(
-         output_file,
-         "\nTotal execution time: {:.2?} seconds",
-         duration.as_secs_f64()
-     )?;
-
-     Ok(())
- }
 //use csv::ReaderBuilder;
 //use std::fs::{self, File, OpenOptions};
 //use std::io::{self, Write};
