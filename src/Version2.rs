@@ -1,6 +1,8 @@
 mod lib;
 use lib::process_input_file;
-use std::fs::{self, OpenOptions};
+use log::{error, info};
+use simplelog::*;
+use std::fs::{self, OpenOptions, File};
 use std::io::{self, Write};
 use std::path::Path;
 use std::sync::{Arc, Mutex, mpsc};
@@ -8,29 +10,38 @@ use std::thread;
 use std::time::Instant;
 
 // This function writes to the summary file with thread safety using a Mutex
-fn write_to_summary_file(output_file: Arc<Mutex<fs::File>>, data: &str) -> io::Result<()> {
-    
+fn write_to_summary_file(output_file: Arc<Mutex<File>>, data: &str) -> io::Result<()> {
     let mut output_file = output_file.lock().unwrap();
     writeln!(output_file, "{}", data)?;
     Ok(())
 }
 
 fn main() -> io::Result<()> {
+    // Initialize the logger
+    CombinedLogger::init(vec![
+        WriteLogger::new(
+            LevelFilter::Info,
+            Config::default(),
+            File::create("../log.txt")?,
+        ),
+    ]).unwrap();
+
     let start_time = Instant::now();
+
+    info!("Program started.");
 
     let base_dir = "../data";
     let output_file_path = "../data/weekly_summary/weekly_sales_summary_version2.txt";
     let output_file = Path::new(output_file_path);
-    
-    // Clear the file if it exists
+
     if output_file.exists() {
         OpenOptions::new()
             .write(true)
             .truncate(true)
             .open(output_file_path)?;
+        info!("Output file truncated.");
     }
 
-    // Open the output file and wrap it in an Arc<Mutex<_>> for safe shared access
     let output_file = Arc::new(Mutex::new(
         OpenOptions::new()
             .write(true)
@@ -51,10 +62,11 @@ fn main() -> io::Result<()> {
         })
         .collect();
 
+    info!("Found {} branch folders.", branch_folders.len());
+
     let (tx, rx) = mpsc::channel();
     let mut handles = vec![];
 
-    // Create 4 threads and distribute the folders using a modulo operation
     let num_threads = 4;
     for i in 0..num_threads {
         let tx = tx.clone();
@@ -70,43 +82,43 @@ fn main() -> io::Result<()> {
             })
             .collect();
 
-        // Clone the Arc<Mutex<_>> for the thread
         let output_file_thread = Arc::clone(&output_file);
 
         let handle = thread::spawn(move || {
-            // Reusing the process_input_file function from lib.rs
-            process_input_file(folders_for_thread, "../data/weekly_summary/weekly_sales_summary_version2.txt").expect("Thread processing failed");
+            for folder in &folders_for_thread {
+                match process_input_file(vec![folder.clone()], "../data/weekly_summary/weekly_sales_summary_version2.txt") {
+                    Ok(_) => info!("Thread {} processed folder: {}", i, folder),
+                    Err(e) => error!("Error processing folder {}: {}", folder, e),
+                }
+            }
 
-            // Writing a message to the output file in a thread-safe way
             write_to_summary_file(output_file_thread, &format!("Thread {} finished", i))
                 .expect("Failed to write to output file");
-
             tx.send("Thread finished".to_string()).expect("Failed to send message");
         });
 
         handles.push(handle);
     }
 
-    drop(tx); // Close the sending side so `rx` knows when the threads are done
+    drop(tx);
 
     let mut results = vec![];
 
-    // Collect results from all threads
     for _ in rx {
         results.push("Thread completed".to_string());
     }
 
-    // Wait for all threads to complete
     for handle in handles {
         handle.join().expect("Failed to join thread");
     }
 
-    // Optionally write the final summary result
     write_to_summary_file(Arc::clone(&output_file), "All threads completed")?;
+    info!("All threads completed.");
 
     let duration = start_time.elapsed();
     println!("Time elapsed: {}\nPhew! I am done.", duration.as_secs_f64());
+    info!("Program finished successfully. Time elapsed: {:.2} seconds", duration.as_secs_f64());
 
-    // Return success
     Ok(())
 }
+
