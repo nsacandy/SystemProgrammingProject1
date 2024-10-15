@@ -3,26 +3,15 @@ use lib::process_input_file;
 use std::fs::{self, OpenOptions};
 use std::io::{self, Write};
 use std::path::Path;
-use std::sync::mpsc;
+use std::sync::{Arc, Mutex, mpsc};
 use std::thread;
 use std::time::Instant;
 
-fn write_to_summary_file(output_file_path: &str, data: Vec<String>) -> io::Result<()> {
-    let output_dir = Path::new(output_file_path).parent().unwrap();
-    if !output_dir.exists() {
-        fs::create_dir_all(output_dir)?;
-    }
-
-    let  mut output_file = OpenOptions::new()
-        .write(true)
-        .create(true)
-        .append(true)
-        .open(output_file_path)?;
-
-    for entry in data {
-        writeln!(output_file, "{}", entry)?;
-    }
-
+// This function writes to the summary file with thread safety using a Mutex
+fn write_to_summary_file(output_file: Arc<Mutex<fs::File>>, data: &str) -> io::Result<()> {
+    
+    let mut output_file = output_file.lock().unwrap();
+    writeln!(output_file, "{}", data)?;
     Ok(())
 }
 
@@ -31,7 +20,25 @@ fn main() -> io::Result<()> {
 
     let base_dir = "../data";
     let output_file_path = "../data/weekly_summary/weekly_sales_summary_version2.txt";
+    let output_file = Path::new(output_file_path);
     
+    // Clear the file if it exists
+    if output_file.exists() {
+        OpenOptions::new()
+            .write(true)
+            .truncate(true)
+            .open(output_file_path)?;
+    }
+
+    // Open the output file and wrap it in an Arc<Mutex<_>> for safe shared access
+    let output_file = Arc::new(Mutex::new(
+        OpenOptions::new()
+            .write(true)
+            .create(true)
+            .append(true)
+            .open(output_file_path)?
+    ));
+
     let branch_folders: Vec<String> = fs::read_dir(base_dir)?
         .filter_map(|entry| entry.ok())
         .filter_map(|entry| {
@@ -63,10 +70,17 @@ fn main() -> io::Result<()> {
             })
             .collect();
 
-        let output_file_path_thread = output_file_path.to_string();
+        // Clone the Arc<Mutex<_>> for the thread
+        let output_file_thread = Arc::clone(&output_file);
+
         let handle = thread::spawn(move || {
             // Reusing the process_input_file function from lib.rs
-            process_input_file(folders_for_thread, &output_file_path_thread).expect("Thread processing failed");
+            process_input_file(folders_for_thread, "../data/weekly_summary/weekly_sales_summary_version2.txt").expect("Thread processing failed");
+
+            // Writing a message to the output file in a thread-safe way
+            write_to_summary_file(output_file_thread, &format!("Thread {} finished", i))
+                .expect("Failed to write to output file");
+
             tx.send("Thread finished".to_string()).expect("Failed to send message");
         });
 
@@ -87,11 +101,11 @@ fn main() -> io::Result<()> {
         handle.join().expect("Failed to join thread");
     }
 
-    // Write the final output if needed (results)
-    write_to_summary_file(output_file_path, results)?;
+    // Optionally write the final summary result
+    write_to_summary_file(Arc::clone(&output_file), "All threads completed")?;
 
     let duration = start_time.elapsed();
-    println!("Multithreaded Time elapsed: {:.2?} seconds", duration);
+    println!("Time elapsed: {}\nPhew! I am done.", duration.as_secs_f64());
 
     // Return success
     Ok(())

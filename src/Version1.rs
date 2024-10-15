@@ -1,14 +1,16 @@
  mod lib;
  use lib::process_input_file;
-
- use std::io::{self, Write};
+ use std::io;
  use std::path::Path;
  use std::time::Instant;
  use std::fs::{self, OpenOptions};
 
  fn main() -> io::Result<()> {
     // Start the timer
+    let start_time = Instant::now();
+
     let base_dir = "../data";
+    
     // Define the output file path
     let output_file_path = "../data/weekly_summary/weekly_sales_summary.txt";
     let output_file = Path::new(output_file_path);
@@ -30,8 +32,6 @@
 				None
 }})
 		.collect();
-
-    let start_time = Instant::now();
 
     // Call the process_input_file function
     process_input_file(branch_folders, output_file_path)?;
