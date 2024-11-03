@@ -1,47 +1,47 @@
-21:29:48 [INFO] Program started.
-21:29:48 [INFO] Output file truncated.
-21:29:48 [INFO] Found 42 branch folders.
-21:29:48 [INFO] Thread 1 processed folder: ../data/FAIRAL
-21:29:48 [INFO] Thread 2 processed folder: ../data/DOVERDW
-21:29:48 [INFO] Thread 0 processed folder: ../data/NULIAS
-21:29:48 [INFO] Thread 1 processed folder: ../data/PHOAZ
-21:29:48 [INFO] Thread 2 processed folder: ../data/MESAAS
-21:29:48 [INFO] Thread 3 processed folder: ../data/ANCHAL
-21:29:48 [INFO] Thread 1 processed folder: ../data/DENVCL
-21:29:48 [INFO] Thread 2 processed folder: ../data/PAVAS
-21:29:48 [INFO] Thread 0 processed folder: ../data/BRIDPTCT
-21:29:48 [INFO] Thread 1 processed folder: ../data/HUNTAL
-21:29:48 [INFO] Thread 2 processed folder: ../data/HRTFDCT
-21:29:48 [INFO] Thread 1 processed folder: ../data/NWNGA
-21:29:48 [INFO] Thread 2 processed folder: ../data/CHDLRAS
-21:29:48 [INFO] Thread 3 processed folder: ../data/LACA
-21:29:48 [INFO] Thread 0 processed folder: ../data/JUNAL
-21:29:48 [INFO] Thread 1 processed folder: ../data/LKWDCL
-21:29:48 [INFO] Thread 2 processed folder: ../data/BIRALB
-21:29:48 [INFO] Thread 1 processed folder: ../data/CTONGA
-21:29:48 [INFO] Thread 2 processed folder: ../data/STMFRDCT
-21:29:48 [INFO] Thread 3 processed folder: ../data/FRSNOCA
-21:29:48 [INFO] Thread 0 processed folder: ../data/PGOAS
-21:29:48 [INFO] Thread 1 processed folder: ../data/SAFRCA
-21:29:48 [INFO] Thread 2 processed folder: ../data/WTRBYCT
-21:29:48 [INFO] Thread 1 processed folder: ../data/SPRGAR
-21:29:48 [INFO] Thread 2 processed folder: ../data/FRTSMAR
-21:29:48 [INFO] Thread 2 processed folder: ../data/weekly_summary
-21:29:48 [INFO] Thread 3 processed folder: ../data/SNJOSECA
-21:29:48 [INFO] Thread 0 processed folder: ../data/GLBRTAS
-21:29:48 [INFO] Thread 1 processed folder: ../data/COSPCL
-21:29:48 [INFO] Thread 1 processed folder: ../data/SNDICA
-21:29:48 [INFO] Thread 3 processed folder: ../data/WASAL
-21:29:48 [INFO] Thread 0 processed folder: ../data/TAFAS
-21:29:48 [INFO] Thread 3 processed folder: ../data/FRTCLCL
-21:29:48 [INFO] Thread 0 processed folder: ../data/FYTVLAR
-21:29:48 [INFO] Thread 3 processed folder: ../data/ALBNM
-21:29:48 [INFO] Thread 0 processed folder: ../data/LILRKAR
-21:29:48 [INFO] Thread 3 processed folder: ../data/TUCSAZ
-21:29:48 [INFO] Thread 0 processed folder: ../data/AURCL
-21:29:48 [INFO] Thread 3 processed folder: ../data/JNSBRAR
-21:29:48 [INFO] Thread 0 processed folder: ../data/NWHVCT
-21:29:48 [INFO] Thread 3 processed folder: ../data/SITAL
-21:29:48 [INFO] Thread 0 processed folder: ../data/TASCLAL
-21:29:48 [INFO] All threads completed.
-21:29:48 [INFO] Program finished successfully. Time elapsed: 0.01 seconds
+15:20:52 [INFO] Program started.
+15:20:52 [INFO] Output file truncated.
+15:20:52 [INFO] Found 42 branch folders.
+15:20:52 [INFO] Thread 0 processed folder: ../data\ALBNM
+15:20:52 [INFO] Thread 2 processed folder: ../data\AURCL
+15:20:52 [INFO] Thread 1 processed folder: ../data\ANCHAL
+15:20:52 [INFO] Thread 3 processed folder: ../data\BIRALB
+15:20:52 [INFO] Thread 0 processed folder: ../data\BRIDPTCT
+15:20:52 [INFO] Thread 2 processed folder: ../data\COSPCL
+15:20:52 [INFO] Thread 1 processed folder: ../data\CHDLRAS
+15:20:52 [INFO] Thread 3 processed folder: ../data\CTONGA
+15:20:52 [INFO] Thread 0 processed folder: ../data\DENVCL
+15:20:52 [INFO] Thread 2 processed folder: ../data\FAIRAL
+15:20:52 [INFO] Thread 1 processed folder: ../data\DOVERDW
+15:20:52 [INFO] Thread 3 processed folder: ../data\FRSNOCA
+15:20:52 [INFO] Thread 0 processed folder: ../data\FRTCLCL
+15:20:52 [INFO] Thread 1 processed folder: ../data\FRTSMAR
+15:20:52 [INFO] Thread 2 processed folder: ../data\FYTVLAR
+15:20:52 [INFO] Thread 3 processed folder: ../data\GLBRTAS
+15:20:52 [INFO] Thread 0 processed folder: ../data\HRTFDCT
+15:20:52 [INFO] Thread 1 processed folder: ../data\HUNTAL
+15:20:52 [INFO] Thread 3 processed folder: ../data\JUNAL
+15:20:52 [INFO] Thread 0 processed folder: ../data\LACA
+15:20:52 [INFO] Thread 1 processed folder: ../data\LILRKAR
+15:20:52 [INFO] Thread 2 processed folder: ../data\JNSBRAR
+15:20:52 [INFO] Thread 3 processed folder: ../data\MESAAS
+15:20:52 [INFO] Thread 0 processed folder: ../data\NULIAS
+15:20:52 [INFO] Thread 1 processed folder: ../data\NWHVCT
+15:20:52 [INFO] Thread 2 processed folder: ../data\LKWDCL
+15:20:52 [INFO] Thread 1 processed folder: ../data\PHOAZ
+15:20:52 [INFO] Thread 3 processed folder: ../data\PAVAS
+15:20:52 [INFO] Thread 0 processed folder: ../data\PGOAS
+15:20:52 [INFO] Thread 2 processed folder: ../data\NWNGA
+15:20:52 [INFO] Thread 1 processed folder: ../data\SNJOSECA
+15:20:52 [INFO] Thread 0 processed folder: ../data\SNDICA
+15:20:52 [INFO] Thread 3 processed folder: ../data\SITAL
+15:20:52 [INFO] Thread 2 processed folder: ../data\SAFRCA
+15:20:52 [INFO] Thread 1 processed folder: ../data\TASCLAL
+15:20:52 [INFO] Thread 0 processed folder: ../data\TAFAS
+15:20:52 [INFO] Thread 3 processed folder: ../data\STMFRDCT
+15:20:52 [INFO] Thread 0 processed folder: ../data\weekly_summary
+15:20:52 [INFO] Thread 2 processed folder: ../data\SPRGAR
+15:20:52 [INFO] Thread 1 processed folder: ../data\WTRBYCT
+15:20:52 [INFO] Thread 3 processed folder: ../data\WASAL
+15:20:52 [INFO] Thread 2 processed folder: ../data\TUCSAZ
+15:20:52 [INFO] All threads completed.
+15:20:52 [INFO] Program finished successfully. Time elapsed: 0.01 seconds
